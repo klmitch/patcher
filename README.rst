@@ -36,9 +36,7 @@ that implements the ``Patcher`` interface has two idempotent methods:
 ``Patcher``.  This means that a patch may be placed with code such
 as::
 
-```
-defer MakeThePatcher().Install().Restore()
-```
+    defer MakeThePatcher().Install().Restore()
 
 The ``Patcher`` will be created and told to install itself, and the
 ``Restore()`` will be evaluated at the end of the test function.
@@ -68,32 +66,30 @@ used in code, allowing test cases that would ordinarily be difficult
 to test reliably.  The below is an example of how ``SetVar()`` may be
 used::
 
-```
-var readFile func(string) ([]byte, error) = ioutil.ReadFile
+    var readFile func(string) ([]byte, error) = ioutil.ReadFile
 
-func DoSomething(filename string) error {
-	data, err := readFile(filename)
-	if err != nil {
-		return err
-	}
+    func DoSomething(filename string) error {
+    	data, err := readFile(filename)
+    	if err != nil {
+    		return err
+    	}
 
-	// Do something...
+    	// Do something...
 
-	return nil
-}
+    	return nil
+    }
 
-func TestDoSomething(t *testing.T) {
-	defer SetVar(&readFile, func(filename string) ([]byte, error) {
-		return []byte("hello"), nil
-	}).Install().Restore()
+    func TestDoSomething(t *testing.T) {
+    	defer SetVar(&readFile, func(filename string) ([]byte, error) {
+    		return []byte("hello"), nil
+    	}).Install().Restore()
 
-	err := DoSomething("some-filename")
+    	err := DoSomething("some-filename")
 
-	if err != nil {
-		t.Fail("non-nil error!")
-	}
-}
-```
+    	if err != nil {
+    		t.Fail("non-nil error!")
+    	}
+    }
 
 ``NewPatchMaster()``
 --------------------
@@ -112,22 +108,20 @@ The ``PatchMaster`` is intended to aid in complex cases involving lots
 of patches, or when patches need to be installed at various points
 during the evaluation of a testing function.  For instance::
 
-```
-func TestSomething(t *testing.T) {
-	pm := NewPatchMaster(
-		SetVar(&var1, "value1"),
-		SetVar(&var2, "value2"),
-	)
-	defer pm.Install().Restore()
+    func TestSomething(t *testing.T) {
+    	pm := NewPatchMaster(
+    		SetVar(&var1, "value1"),
+    		SetVar(&var2, "value2"),
+    	)
+    	defer pm.Install().Restore()
 
-	// Do some tests
+    	// Do some tests
 
-	// Patch an additional variable
-	pm.Add(SetVar(&var3, "value3")).Install()
+    	// Patch an additional variable
+    	pm.Add(SetVar(&var3, "value3")).Install()
 
-	// Do some more tests
-}
-```
+    	// Do some more tests
+    }
 
 Implementing a Patcher
 ----------------------
@@ -172,9 +166,7 @@ which is automatically run by ``make test`` or ``make cover``, and
 will rewrite non-conforming files.  Note that ``goimports`` is a
 third-party package; it may be installed using::
 
-```
-% go get -u -v golang.org/x/tools/cmd/goimports
-```
+    % go get -u -v golang.org/x/tools/cmd/goimports
 
 ``make format``
 ---------------
@@ -186,9 +178,7 @@ test`` or ``make cover``, which automatically invoke ``make format``.
 Note that ``goimports`` is a third-party package; it may be installed
 using::
 
-```
-% go get -u -v golang.org/x/tools/cmd/goimports
-```
+    % go get -u -v golang.org/x/tools/cmd/goimports
 
 ``make lint``
 -------------
@@ -200,9 +190,7 @@ mode.  Most developers will prefer to use ``make test`` or ``make
 cover``, which automatically invoke ``make lint``.  Note that
 ``golint`` is a third-party package; it may be installed using::
 
-```
-% go get -u -v golang.org/x/lint/golint
-```
+    % go get -u -v golang.org/x/lint/golint
 
 ``make vet``
 ------------
