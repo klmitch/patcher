@@ -12,12 +12,13 @@
 // implied.  See the License for the specific language governing
 // permissions and limitations under the License.
 
-// Patcher is a testing tool intended to aid in the construction of
-// tests which "patch" the source in some fashion.  This is not monkey
-// patching, like is performed with dynamic languages like Python;
-// Patcher requires that the source code be written with the patching
-// in mind.  For instance, a particular function called by the source
-// may be assigned to a variable, then that variable used in the call.
+// Package patcher is a testing tool intended to aid in the
+// construction of tests which "patch" the source in some fashion.
+// This is not monkey patching, like is performed with dynamic
+// languages like Python; Patcher requires that the source code be
+// written with the patching in mind.  For instance, a particular
+// function called by the source may be assigned to a variable, then
+// that variable used in the call.
 //
 // The primary API in this package is the Patcher interface.
 // Something that implements the Patcher interface has two idempotent
@@ -29,7 +30,6 @@
 // a Patcher; most users of this package will not find this type
 // useful.  The more useful Patcher implementations are created with
 // SetVar and NewPatchMaster.
-
 package patcher
 
 // Patcher is an interface for patchers.  Patchers have Install and

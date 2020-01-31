@@ -91,6 +91,76 @@ used::
     	}
     }
 
+``Log()``
+---------
+
+The ``Log()`` function creates an instance of a ``LogPatcher`` struct,
+which implements ``Patcher``.  The ``Log()`` function is called with
+an ``io.Writer`` to which the output of the default logger from the
+``log`` package should be redirected while the patch is active; when
+the ``Patcher`` is installed, all output to the default logger will be
+redirected to that ``io.Writer`` and the original ``io.Writer`` will
+be saved for later restoration.  For instance::
+
+    func DoSomething(filename string) error {
+    	data, err := io.ReadFile(filename)
+    	if err != nil {
+    		log.Printf("Error reading file")
+    		return err
+    	}
+
+    	// Do something...
+
+    	return nil
+    }
+
+    func TestDoSomething(t *testing.T) {
+    	logStream := &bytes.Buffer{}
+    	defer Log(logStream).Install().Restore()
+
+    	err := DoSomething("some-filename")
+
+    	if logStream.String() != "Error reading file" {
+    		t.Fail("failed to log!")
+    	}
+    }
+
+``SetEnv()`` and ``UnsetEnv()``
+-------------------------------
+
+The ``SetEnv()`` and ``UnsetEnv()`` functions create an instance of an
+``EnvPatcher`` struct, which implements ``Patcher``.  The values from
+``SetEnv()`` and ``UnsetEnv()`` work to ensure that the system
+environment variables match a desired test environment, e.g., that a
+particular environment variable is set to a desired value while
+another one is not set at all.  For instance::
+
+    func DoSomething() error {
+    	filename, ok := os.LookupEnv("FILENAME")
+    	if !ok {
+    		filename := "some-filename"
+    	}
+
+    	data, err := io.ReadFile(filename)
+    	if err != nil {
+    		return err
+    	}
+
+    	// Do something...
+
+    	return nil
+    }
+
+    func TestDoSomething(t *testing.T) {
+    	defer UnsetEnv("FILENAME").Install().Restore()
+
+    	err := DoSomething()
+
+    	if err != nil {
+    		t.Fail("non-nil error!")
+    	}
+    }
+
 ``NewPatchMaster()``
 --------------------
 
