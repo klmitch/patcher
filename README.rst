@@ -125,6 +125,42 @@ be saved for later restoration.  For instance::
     	}
     }
 
+``SetEnv()`` and ``UnsetEnv()``
+-------------------------------
+
+The ``SetEnv()`` and ``UnsetEnv()`` functions create an instance of an
+``EnvPatcher`` struct, which implements ``Patcher``.  The values from
+``SetEnv()`` and ``UnsetEnv()`` work to ensure that the system
+environment variables match a desired test environment, e.g., that a
+particular environment variable is set to a desired value while
+another one is not set at all.  For instance::
+
+    func DoSomething() error {
+    	filename, ok := os.LookupEnv("FILENAME")
+    	if !ok {
+    		filename := "some-filename"
+    	}
+
+    	data, err := io.ReadFile(filename)
+    	if err != nil {
+    		return err
+    	}
+
+    	// Do something...
+
+    	return nil
+    }
+
+    func TestDoSomething(t *testing.T) {
+    	defer UnsetEnv("FILENAME").Install().Restore()
+
+    	err := DoSomething()
+
+    	if err != nil {
+    		t.Fail("non-nil error!")
+    	}
+    }
+
 ``NewPatchMaster()``
 --------------------
 
