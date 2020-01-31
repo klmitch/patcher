@@ -25,11 +25,9 @@
 // methods: Install and Restore; for convenience, both return the same
 // Patcher.
 //
-// This package provides three implementations of Patcher.  The first
-// is MockPatcher, which is provided for testing code that manipulates
-// a Patcher; most users of this package will not find this type
-// useful.  The more useful Patcher implementations are created with
-// SetVar and NewPatchMaster.
+// This package provides several implementations of Patcher, including
+// MockPatcher, which is provided for testing code that manipulates a
+// Patcher; most users of this package will not find this type useful.
 package patcher
 
 // Patcher is an interface for patchers.  Patchers have Install and
