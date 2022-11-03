@@ -27,9 +27,9 @@ type EnvPatcher struct {
 
 // Patch points for testing the routines in this file.
 var (
-	setenv    func(string, string) error  = os.Setenv
-	lookupenv func(string) (string, bool) = os.LookupEnv
-	unsetenv  func(string) error          = os.Unsetenv
+	setenv    = os.Setenv
+	lookupenv = os.LookupEnv
+	unsetenv  = os.Unsetenv
 )
 
 // setEnv is a helper for the EnvPatcher that sets or unsets an

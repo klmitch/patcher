@@ -26,7 +26,7 @@ func TestVariableSetterImplementsPatcher(t *testing.T) {
 }
 
 func TestSetVarBase(t *testing.T) {
-	variable := "unpatched"
+	variable := "unpatched" //nolint:goconst
 
 	vs := SetVar(&variable, "patched")
 

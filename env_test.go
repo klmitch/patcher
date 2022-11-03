@@ -135,7 +135,7 @@ func TestInternalSetEnvSetBase(t *testing.T) {
 			return nil
 		}),
 	).Install().Restore()
-	value := "value"
+	value := "value" //nolint:goconst
 
 	setEnv("ENV", &value)
 
@@ -206,7 +206,7 @@ func TestEnvPatcherInstallExists(t *testing.T) {
 		SetVar(&lookupenv, func(n string) (string, bool) {
 			assert.Equal(t, "ENV", n)
 			lookupenvCalled = true
-			return "original", true
+			return "original", true //nolint:goconst
 		}),
 		SetVar(&unsetenv, func(n string) error {
 			assert.Equal(t, "ENV", n)
